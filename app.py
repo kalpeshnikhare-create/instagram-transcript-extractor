@@ -7,6 +7,11 @@ from transcriber import transcribe_with_timestamps
 
 app = FastAPI()
 
+@app.on_event("startup")
+async def startup_check():
+    if not os.environ.get("OPENAI_API_KEY"):
+        raise RuntimeError("OPENAI_API_KEY environment variable is not set")
+
 
 @app.get("/")
 def home():
