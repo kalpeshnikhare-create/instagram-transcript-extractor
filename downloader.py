@@ -9,6 +9,14 @@ COOKIES_PATH = "/tmp/instagram_cookies.txt"
 
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
+# Write cookies from env var to temp file at startup
+_cookies_content = os.environ.get("INSTAGRAM_COOKIES", "")
+if _cookies_content:
+    with open(COOKIES_PATH, "w") as f:
+        f.write(_cookies_content)
+
+os.makedirs(DOWNLOAD_DIR, exist_ok=True)
+
 
 def download_instagram_audio(url: str, audio_format: str = "mp3") -> str:
     """
