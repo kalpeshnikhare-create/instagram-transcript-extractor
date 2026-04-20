@@ -25,13 +25,15 @@ def download_instagram_audio(url: str, audio_format: str = "mp3") -> str:
         "--extract-audio",
         "--audio-format", audio_format,
         "--audio-quality", "0",
-        "--cookies", COOKIES_PATH,
         "--extractor-args", "instagram:app=android",
         "--no-check-certificates",
         "--user-agent", "Mozilla/5.0 (Linux; Android 11; SM-G991B)",
         "-o", filepath,
         url
     ]
+    # Inject cookies only if the file exists (avoids hard crash on fresh deploys)
+    if os.path.exists(COOKIES_PATH):
+        cmd[1:1] = ["--cookies", COOKIES_PATH]
 
     result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
